@@ -1,0 +1,16 @@
+version: '3.4'
+
+networks:
+  db-net:
+
+services:
+  twisub-db:
+    container_name: twisub-db
+    image: postgres:12.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: twisub
+    ports:
+      - 5432:5432
