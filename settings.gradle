@@ -1,1 +1,6 @@
 rootProject.name = 'twisub'
+
+include 'tweets'
+include 'tweetsgetter'
+include 'twitterclient'
+include 'webapp'
