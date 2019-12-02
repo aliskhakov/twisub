@@ -1,16 +1,56 @@
 version: '3.4'
 
-networks:
-  db-net:
-
 services:
-  twisub-db:
-    container_name: twisub-db
+  ms-tweets-db:
+    container_name: ms-tweets-db
     image: postgres:12.1-alpine
     restart: always
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: twisub
+
+  ms-tweets:
+    container_name: ms-tweets
+    image: com.jstructure.twisub/tweets:0.0.1-SNAPSHOT
+    depends_on:
+      - ms-tweets-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ms-tweets-db:5432/twisub
+      SPRING_DATASOURCE_USERNAME: username
+      SPRING_DATASOURCE_PASSWORD: password
+      SERVER_PORT: 8080
+
+  ms-twitterclient:
+    container_name: ms-twitterclient
+    image: com.jstructure.twisub/twitterclient:0.0.1-SNAPSHOT
+    environment:
+      APP_TWITTER_CONSUMERKEY: ENTER_YOUR_APP_TWITTER_CONSUMERKEY
+      APP_TWITTER_CONSUMERSECRET: ENTER_YOUR_APP_TWITTER_CONSUMERKEY
+      APP_TWITTER_ACCESSTOKEN: ENTER_YOUR_APP_TWITTER_ACCESSTOKEN
+      APP_TWITTER_ACCESSTOKENSECRET: ENTER_YOUR_APP_TWITTER_ACCESSTOKENSECRET
+      APP_TWITTER_TWEETSPERSEARCH: 10
+      SERVER_PORT: 8080
+
+  ms-tweetsgetter:
+    container_name: ms-tweetsgetter
+    image: com.jstructure.twisub/tweetsgetter:0.0.1-SNAPSHOT
+    depends_on:
+      - ms-twitterclient
+      - ms-tweets
+    environment:
+      APP_TWITTERCLIENTURL: http://ms-twitterclient:8080
+      APP_TWEETSURL: http://ms-tweets:8080
+      APP_GETTWEETSPERIODICITY: 30000
+      SERVER_PORT: 8080
+
+  ms-webapp:
+    container_name: ms-webapp
+    image: com.jstructure.twisub/webapp:0.0.1-SNAPSHOT
+    depends_on:
+      - ms-tweets
+    environment:
+      APP_TWEETSURL: http://ms-tweets:8080
+      SERVER_PORT: 8080
     ports:
-      - 5432:5432
+      - 8080:8080
