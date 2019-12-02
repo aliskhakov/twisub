@@ -12,4 +12,5 @@ public interface TweetDataService {
 
     @Deprecated
     Iterable<TweetDto> getAll(UUID queryId);
+
 }

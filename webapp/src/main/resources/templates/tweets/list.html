@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Tweets</title>
+</head>
+<body>
+<h1>Tweets</h1>
+<ul>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Author</th>
+            <th>Message</th>
+        </tr>
+        <tr th:each="tweet : ${tweets}">
+            <td th:text="${tweet.createdAt}"></td>
+            <td th:text="${tweet.author}"></td>
+            <td th:text="${tweet.message}"></td>
+        </tr>
+    </table>
+</ul>
+</body>
+</html>

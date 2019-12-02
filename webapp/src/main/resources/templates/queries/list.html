@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Queries</title>
+</head>
+<body>
+<h1>Queries</h1>
+<a th:href="@{/queries/create}">Создать</a>
+<ul>
+    <li th:each="query: ${queries}">
+        <a th:href="@{/queries/{queryId}/tweets(queryId=${query.id})}" th:text="${query.text}"/>
+    </li>
+</ul>
+</body>
+</html>
