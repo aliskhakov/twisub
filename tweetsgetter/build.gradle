@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'com.bmuschko.docker-java-application' version '4.9.0'
 }
 
 group = 'com.jstructure.twisub'
@@ -32,4 +33,34 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+import com.bmuschko.gradle.docker.tasks.image.*;
+
+def dockerBuildDir = "${buildDir}/docker"
+
+apply plugin: DockerRemoteApiPlugin
+
+task createDockerfile(type: Dockerfile) {
+	dependsOn 'bootJar'
+	destFile = project.file("${dockerBuildDir}/Dockerfile")
+	from 'openjdk:8-jre-alpine'
+	copyFile "${bootJar.archiveName}", "${bootJar.archiveName}"
+	entryPoint 'java'
+	defaultCommand '-jar', "${bootJar.archiveName}"
+	exposePort 8080
+	runCommand 'apk --update --no-cache add curl'
+}
+
+task copyJar(type: Copy) {
+	dependsOn 'createDockerfile'
+	from "${buildDir}/libs/${bootJar.archiveName}"
+	into "${dockerBuildDir}"
+}
+
+task buildImage(type: DockerBuildImage) {
+	dependsOn 'copyJar'
+	inputDir = file("${dockerBuildDir}")
+	tags.add("${project.group}/${project.name}:${project.version}")
 }
