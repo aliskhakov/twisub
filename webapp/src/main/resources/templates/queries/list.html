@@ -2,11 +2,14 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Queries</title>
+    <title>My Queries</title>
 </head>
 <body>
-<h1>Queries</h1>
-<a th:href="@{/queries/create/}">Создать</a>
+<ul>
+    <li><a th:href="@{/}"/>Index</a></li>
+</ul>
+<h1>My Queries</h1>
+<a th:href="@{/queries/create/}">Create</a>
 <ul>
     <li th:each="query: ${queries}">
         <a th:href="@{/queries/{queryId}/tweets/(queryId=${query.id})}" th:text="${query.text}"/>

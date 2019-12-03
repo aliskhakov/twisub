@@ -5,6 +5,10 @@
     <title>Create query</title>
 </head>
 <body>
+<ul>
+    <li><a th:href="@{/}"/>Index</a></li>
+    <li><a th:href="@{/queries/}"/>My queries</a></li>
+</ul>
 <h1>Create query</h1>
 <form action="#" th:action="@{/queries/create/}" th:object="${query}" method="post">
     <p>Text: <input type="text" th:field="*{text}" /></p>
