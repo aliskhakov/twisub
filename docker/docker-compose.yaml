@@ -12,7 +12,7 @@ services:
 
   ms-tweets:
     container_name: ms-tweets
-    image: com.jstructure.twisub/tweets:0.0.1-SNAPSHOT
+    image: aliskhakov/tweets:0.0.1-SNAPSHOT
     depends_on:
       - ms-tweets-db
     environment:
@@ -23,7 +23,7 @@ services:
 
   ms-twitterclient:
     container_name: ms-twitterclient
-    image: com.jstructure.twisub/twitterclient:0.0.1-SNAPSHOT
+    image: aliskhakov/twitterclient:0.0.1-SNAPSHOT
     environment:
       APP_TWITTER_CONSUMERKEY: ENTER_YOUR_APP_TWITTER_CONSUMERKEY
       APP_TWITTER_CONSUMERSECRET: ENTER_YOUR_APP_TWITTER_CONSUMERKEY
@@ -34,7 +34,7 @@ services:
 
   ms-tweetsgetter:
     container_name: ms-tweetsgetter
-    image: com.jstructure.twisub/tweetsgetter:0.0.1-SNAPSHOT
+    image: aliskhakov/tweetsgetter:0.0.1-SNAPSHOT
     depends_on:
       - ms-twitterclient
       - ms-tweets
@@ -46,7 +46,7 @@ services:
 
   ms-webapp:
     container_name: ms-webapp
-    image: com.jstructure.twisub/webapp:0.0.1-SNAPSHOT
+    image: aliskhakov/webapp:0.0.1-SNAPSHOT
     depends_on:
       - ms-tweets
     environment:

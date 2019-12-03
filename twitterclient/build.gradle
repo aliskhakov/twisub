@@ -33,6 +33,7 @@ import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
 import com.bmuschko.gradle.docker.tasks.image.*;
 
 def dockerBuildDir = "${buildDir}/docker"
+def dockerVendor = 'aliskhakov'
 
 apply plugin: DockerRemoteApiPlugin
 
@@ -56,5 +57,5 @@ task copyJar(type: Copy) {
 task buildImage(type: DockerBuildImage) {
     dependsOn 'copyJar'
     inputDir = file("${dockerBuildDir}")
-    tags.add("${project.group}/${project.name}:${project.version}")
+    tags.add("${dockerVendor}/${project.name}:${project.version}")
 }
