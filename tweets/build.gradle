@@ -60,5 +60,5 @@ task copyJar(type: Copy) {
 task buildImage(type: DockerBuildImage) {
     dependsOn 'copyJar'
     inputDir = file("${dockerBuildDir}")
-    tags.add("ms-${project.name}:${project.version}")
+    tags.add("${project.group}/${project.name}:${project.version}")
 }
