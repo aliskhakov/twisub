@@ -60,7 +60,7 @@ services:
       - ms-webapp-db
       - ms-tweets
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://ms-tweets-db:5432/twisub
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ms-webapp-db:5432/twisub
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
       APP_TWEETSURL: http://ms-tweets:8080
