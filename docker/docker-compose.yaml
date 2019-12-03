@@ -39,7 +39,7 @@ services:
       - ms-twitterclient
       - ms-tweets
     environment:
-      APP_TWITTERCLIENTURL: http://ms-twitterclient:8080
+      APP_TWITTERCLIENTURL: http://ms-twitterclient:8080/mock
       APP_TWEETSURL: http://ms-tweets:8080
       APP_GETTWEETSPERIODICITY: 30000
       SERVER_PORT: 8080
