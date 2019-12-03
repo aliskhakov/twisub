@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/queries")
+@RequestMapping("/queries/")
 public class QueryController {
 
     @Autowired
@@ -22,19 +22,19 @@ public class QueryController {
         return "queries/list";
     }
 
-    @GetMapping(path = "/create", produces = "text/html")
+    @GetMapping(path = "create/", produces = "text/html")
     public String create(Model model) {
         model.addAttribute("query", new QueryDto());
         return "queries/create";
     }
 
-    @PostMapping(path = "/create", produces = "text/html")
+    @PostMapping(path = "create/", produces = "text/html")
     public String create(@ModelAttribute QueryDto query) {
         tweetsService.createQuery(query);
-        return "redirect:/queries";
+        return "redirect:/queries/";
     }
 
-    @GetMapping(path = "/{id}/tweets", produces = "text/html")
+    @GetMapping(path = "{id}/tweets/", produces = "text/html")
     public String tweets(@PathVariable UUID id, Model model) {
         model.addAttribute("tweets", tweetsService.getTweets(id));
         return "tweets/list";

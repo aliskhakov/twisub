@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Create query</h1>
-<form action="#" th:action="@{/queries/create}" th:object="${query}" method="post">
+<form action="#" th:action="@{/queries/create/}" th:object="${query}" method="post">
     <p>Text: <input type="text" th:field="*{text}" /></p>
     <p><input type="submit" value="Submit" /></p>
 </form>

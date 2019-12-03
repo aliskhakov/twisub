@@ -6,10 +6,10 @@
 </head>
 <body>
 <h1>Queries</h1>
-<a th:href="@{/queries/create}">Создать</a>
+<a th:href="@{/queries/create/}">Создать</a>
 <ul>
     <li th:each="query: ${queries}">
-        <a th:href="@{/queries/{queryId}/tweets(queryId=${query.id})}" th:text="${query.text}"/>
+        <a th:href="@{/queries/{queryId}/tweets/(queryId=${query.id})}" th:text="${query.text}"/>
     </li>
 </ul>
 </body>
