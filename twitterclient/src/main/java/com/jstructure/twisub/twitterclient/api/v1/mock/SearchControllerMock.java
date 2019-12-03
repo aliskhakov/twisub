@@ -24,8 +24,8 @@ public class SearchControllerMock {
             TweetDto tweet = new TweetDto();
             tweet.setAuthor("testuser");
             tweet.setCreatedAt(new Date());
-            tweet.setId(999999L);
-            tweet.setMessage(String.format("This is a test tweet for query '%s'." +
+            tweet.setId(System.currentTimeMillis() + i);
+            tweet.setMessage(String.format("This is a test tweet for query '%s'. " +
                     "If you want to see real tweets set up Twitter API credentials.", query));
             tweets.add(tweet);
         }
