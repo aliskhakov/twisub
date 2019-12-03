@@ -10,11 +10,14 @@ public interface QueryDataService {
 
     void updateQuery(QueryDto queryDto);
 
-    void deleteQuery(UUID id);
+    void deleteQuery(String username, UUID id);
 
-    QueryDto getQueryById(UUID id);
+    QueryDto getQueryByUsernameAndId(String username, UUID id);
 
     @Deprecated
     Iterable<QueryDto> getAll();
+
+    @Deprecated
+    Iterable<QueryDto> getAll(String username);
 
 }

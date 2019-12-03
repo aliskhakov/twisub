@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface TweetsService {
 
-    List<QueryDto> getQueries();
+    List<QueryDto> getQueries(String username);
 
-    List<TweetDto> getTweets(UUID queryId);
+    List<TweetDto> getTweets(String username, UUID queryId);
 
     void createQuery(QueryDto query);
 

@@ -17,7 +17,7 @@ public class SecurityServiceImpl implements SecurityService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    @Qualifier("user-details-service-impl")
+    @Qualifier("userDetailsServiceImplBean")
     private UserDetailsService userDetailsService;
 
     @Override

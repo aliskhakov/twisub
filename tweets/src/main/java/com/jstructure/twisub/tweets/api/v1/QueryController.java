@@ -2,7 +2,7 @@ package com.jstructure.twisub.tweets.api.v1;
 
 import com.jstructure.twisub.tweets.dto.QueryDto;
 import com.jstructure.twisub.tweets.service.QueryDataService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +11,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/queries")
+@RequiredArgsConstructor
 public class QueryController {
 
-    @Autowired
-    private QueryDataService dataService;
+    private final QueryDataService dataService;
 
     @PostMapping(path = "/", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -23,9 +23,9 @@ public class QueryController {
         return query;
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public QueryDto read(@PathVariable UUID id) {
-        return dataService.getQueryById(id);
+    @GetMapping(path = "/{username}/{id}", produces = "application/json")
+    public QueryDto read(@PathVariable String username, @PathVariable UUID id) {
+        return dataService.getQueryByUsernameAndId(username, id);
     }
 
     @PutMapping(path = "/{id}", produces = "application/json")
@@ -35,15 +35,20 @@ public class QueryController {
         return query;
     }
 
-    @DeleteMapping(path = "/{id}", produces = "application/json")
+    @DeleteMapping(path = "/{username}/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable UUID id) {
-        dataService.deleteQuery(id);
+    public void delete(@PathVariable String username, @PathVariable UUID id) {
+        dataService.deleteQuery(username, id);
     }
 
     @GetMapping(path = "/", produces = "application/json")
     public Iterable<QueryDto> list() {
         return dataService.getAll();
+    }
+
+    @GetMapping(path = "/{username}", produces = "application/json")
+    public Iterable<QueryDto> list(@PathVariable String username) {
+        return dataService.getAll(username);
     }
 
 }

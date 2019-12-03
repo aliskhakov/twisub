@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface TweetRepository extends CrudRepository<TweetEntity, UUID> {
 
-    @Query("SELECT t FROM TweetEntity t WHERE t.query.id = ?1")
-    List<TweetEntity> findByQueryId(UUID queryId);
+    @Query("SELECT t FROM TweetEntity t WHERE t.query.username = ?1 AND t.query.id = ?2")
+    List<TweetEntity> findByUsernameAndQueryId(String username, UUID queryId);
 
 }

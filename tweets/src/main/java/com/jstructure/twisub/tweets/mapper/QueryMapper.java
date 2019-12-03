@@ -10,6 +10,7 @@ public class QueryMapper {
     public QueryDto map(QueryEntity entity) {
         QueryDto dto = new QueryDto();
         dto.setId(entity.getId());
+        dto.setUsername(entity.getUsername());
         dto.setText(entity.getText());
         dto.setLastTweetId(entity.getLastTweetId());
         return dto;
@@ -18,6 +19,7 @@ public class QueryMapper {
     public QueryEntity map(QueryDto dto) {
         QueryEntity entity = new QueryEntity();
         entity.setId(dto.getId());
+        entity.setUsername(dto.getUsername());
         entity.setText(dto.getText());
         entity.setLastTweetId(dto.getLastTweetId());
         return entity;

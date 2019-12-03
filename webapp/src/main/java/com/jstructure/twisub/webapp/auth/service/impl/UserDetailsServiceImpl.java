@@ -3,7 +3,7 @@ package com.jstructure.twisub.webapp.auth.service.impl;
 import com.jstructure.twisub.webapp.auth.entity.Role;
 import com.jstructure.twisub.webapp.auth.entity.User;
 import com.jstructure.twisub.webapp.auth.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service("user-details-service-impl")
+@Service("userDetailsServiceImplBean")
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional(readOnly = true)

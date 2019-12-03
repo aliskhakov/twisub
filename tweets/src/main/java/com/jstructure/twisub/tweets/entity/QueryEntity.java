@@ -24,6 +24,9 @@ public class QueryEntity {
     @Column(name = "witter_last_tweet_id")
     private Long lastTweetId;
 
+    @Column(name = "username", nullable = false, length = 25)
+    private String username;
+
     @OneToMany(mappedBy = "query")
     private Set<TweetEntity> tweets;
 

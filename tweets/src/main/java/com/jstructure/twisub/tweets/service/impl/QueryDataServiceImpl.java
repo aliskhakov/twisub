@@ -1,23 +1,22 @@
 package com.jstructure.twisub.tweets.service.impl;
 
+import com.jstructure.twisub.tweets.dto.QueryDto;
 import com.jstructure.twisub.tweets.entity.QueryEntity;
 import com.jstructure.twisub.tweets.mapper.QueryMapper;
 import com.jstructure.twisub.tweets.repository.QueryRepository;
 import com.jstructure.twisub.tweets.service.QueryDataService;
-import com.jstructure.twisub.tweets.dto.QueryDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class QueryDataServiceImpl implements QueryDataService {
 
-    @Autowired
-    private QueryRepository repository;
+    private final QueryRepository repository;
 
-    @Autowired
-    private QueryMapper queryMapper;
+    private final QueryMapper queryMapper;
 
     @Override
     public void createQuery(QueryDto queryDto) {
@@ -32,13 +31,13 @@ public class QueryDataServiceImpl implements QueryDataService {
     }
 
     @Override
-    public void deleteQuery(UUID id) {
-        repository.deleteById(id);
+    public void deleteQuery(String username, UUID id) {
+        repository.deleteByUsernameAndId(username, id);
     }
 
     @Override
-    public QueryDto getQueryById(UUID id) {
-        Optional<QueryEntity> optionalQuery = repository.findById(id);
+    public QueryDto getQueryByUsernameAndId(String username, UUID id) {
+        Optional<QueryEntity> optionalQuery = repository.findOneByUsernameAndId(username, id);
         if (optionalQuery.isPresent()) {
             return queryMapper.map(optionalQuery.get());
         }
@@ -48,10 +47,18 @@ public class QueryDataServiceImpl implements QueryDataService {
     @Override
     public Iterable<QueryDto> getAll() {
         Set<QueryDto> queries = new HashSet<>();
-        for (QueryEntity query: repository.findAll()) {
+        for (QueryEntity query : repository.findAll()) {
             queries.add(queryMapper.map(query));
         }
         return queries;
     }
 
+    @Override
+    public Iterable<QueryDto> getAll(String username) {
+        Set<QueryDto> queries = new HashSet<>();
+        for (QueryEntity query : repository.findAllByUsername(username)) {
+            queries.add(queryMapper.map(query));
+        }
+        return queries;
+    }
 }

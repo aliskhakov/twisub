@@ -4,7 +4,7 @@ import com.jstructure.twisub.webapp.config.AppConfigProperties;
 import com.jstructure.twisub.webapp.dto.QueryDto;
 import com.jstructure.twisub.webapp.dto.TweetDto;
 import com.jstructure.twisub.webapp.service.TweetsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,25 +17,27 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class TweetsServiceImpl implements TweetsService {
 
-    @Autowired
-    private AppConfigProperties properties;
+    private final AppConfigProperties properties;
 
-    @Autowired
-    private RestOperations restTemplate;
+    private final RestOperations restTemplate;
 
     @Override
-    public List<QueryDto> getQueries() {
-        String path = String.format("%s/v1/queries/", properties.getTweetsUrl());
+    public List<QueryDto> getQueries(String username) {
+        String path = String.format("%s/v1/queries/%s", properties.getTweetsUrl(), username);
         return restTemplate.exchange(path, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<QueryDto>>() {}).getBody();
     }
 
     @Override
-    public List<TweetDto> getTweets(UUID queryId) {
-        String path = String.format("%s/v1/tweets/%s",
-                properties.getTweetsUrl(), queryId
+    public List<TweetDto> getTweets(String username, UUID queryId) {
+        String path = String.format(
+                "%s/v1/tweets/%s/%s",
+                properties.getTweetsUrl(),
+                username,
+                queryId
         );
         return restTemplate.exchange(path, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<TweetDto>>() {}).getBody();

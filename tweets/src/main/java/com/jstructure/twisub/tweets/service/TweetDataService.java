@@ -11,6 +11,6 @@ public interface TweetDataService {
     void createTweets(UUID queryId, Iterable<TweetDto> tweets);
 
     @Deprecated
-    Iterable<TweetDto> getAll(UUID queryId);
+    Iterable<TweetDto> getAll(String username, UUID queryId);
 
 }

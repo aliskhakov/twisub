@@ -17,11 +17,13 @@ public class User {
     private Long id;
 
     @NotNull
-    @Size(min = 1)
+    @Size(min = 1, max = 25)
+    @Column(name = "username", nullable = false, length = 25)
     private String username;
 
     @NotNull
     @Size(min = 1)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany

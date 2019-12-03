@@ -6,7 +6,7 @@ import com.jstructure.twisub.tweets.entity.TweetEntity;
 import com.jstructure.twisub.tweets.mapper.TweetMapper;
 import com.jstructure.twisub.tweets.repository.TweetRepository;
 import com.jstructure.twisub.tweets.service.TweetDataService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -14,13 +14,12 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class TweetDataServiceImpl implements TweetDataService {
 
-    @Autowired
-    private TweetRepository repository;
+    private final TweetRepository repository;
 
-    @Autowired
-    private TweetMapper tweetMapper;
+    private final TweetMapper tweetMapper;
 
     @Override
     public void createTweet(UUID queryId, TweetDto tweetDto) {
@@ -43,9 +42,9 @@ public class TweetDataServiceImpl implements TweetDataService {
     }
 
     @Override
-    public Iterable<TweetDto> getAll(UUID queryId) {
+    public Iterable<TweetDto> getAll(String username, UUID queryId) {
         Set<TweetDto> tweets = new HashSet<>();
-        for (TweetEntity tweet : repository.findByQueryId(queryId)) {
+        for (TweetEntity tweet : repository.findByUsernameAndQueryId(username, queryId)) {
             tweets.add(tweetMapper.map(tweet));
         }
         return tweets;

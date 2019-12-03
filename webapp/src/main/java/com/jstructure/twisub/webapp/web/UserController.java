@@ -3,23 +3,25 @@ package com.jstructure.twisub.webapp.web;
 import com.jstructure.twisub.webapp.auth.entity.User;
 import com.jstructure.twisub.webapp.auth.service.SecurityService;
 import com.jstructure.twisub.webapp.auth.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/auth/")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
     @GetMapping("registration/")
     public String registration(Model model) {

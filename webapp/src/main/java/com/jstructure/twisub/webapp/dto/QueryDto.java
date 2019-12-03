@@ -14,6 +14,8 @@ public class QueryDto {
 
     private UUID id;
 
+    private String username;
+
     private String text;
 
     private Long lastTweetId;

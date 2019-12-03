@@ -2,23 +2,24 @@ package com.jstructure.twisub.webapp.web;
 
 import com.jstructure.twisub.webapp.dto.QueryDto;
 import com.jstructure.twisub.webapp.service.TweetsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/queries/")
+@RequiredArgsConstructor
 public class QueryController {
 
-    @Autowired
-    private TweetsService tweetsService;
+    private final TweetsService tweetsService;
 
     @GetMapping(path = "/", produces = "text/html")
-    public String list(Model model) {
-        model.addAttribute("queries", tweetsService.getQueries());
+    public String list(Model model, Principal principal) {
+        model.addAttribute("queries", tweetsService.getQueries(principal.getName()));
         return "queries/list";
     }
 
@@ -29,14 +30,15 @@ public class QueryController {
     }
 
     @PostMapping(path = "create/", produces = "text/html")
-    public String create(@ModelAttribute QueryDto query) {
+    public String create(@ModelAttribute QueryDto query, Principal principal) {
+        query.setUsername(principal.getName());
         tweetsService.createQuery(query);
         return "redirect:/queries/";
     }
 
-    @GetMapping(path = "{id}/tweets/", produces = "text/html")
-    public String tweets(@PathVariable UUID id, Model model) {
-        model.addAttribute("tweets", tweetsService.getTweets(id));
+    @GetMapping(path = "{queryId}/tweets/", produces = "text/html")
+    public String tweets(@PathVariable UUID queryId, Model model, Principal principal) {
+        model.addAttribute("tweets", tweetsService.getTweets(principal.getName(), queryId));
         return "tweets/list";
     }
 

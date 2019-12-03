@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class AuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    @Qualifier("user-details-service-impl")
+    @Qualifier("userDetailsServiceImplBean")
     private UserDetailsService userDetailsService;
 
     @Bean
