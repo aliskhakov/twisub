@@ -9,6 +9,8 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: twisub
+    ports:
+      - 54320:5432
 
   ms-tweets:
     container_name: ms-tweets
@@ -20,6 +22,8 @@ services:
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
       SERVER_PORT: 8080
+    ports:
+      - 8081:8080
 
   ms-twitterclient:
     container_name: ms-twitterclient
@@ -31,6 +35,8 @@ services:
       APP_TWITTER_ACCESSTOKENSECRET: ENTER_YOUR_APP_TWITTER_ACCESSTOKENSECRET
       APP_TWITTER_TWEETSPERSEARCH: 10
       SERVER_PORT: 8080
+    ports:
+      - 8083:8080
 
   ms-tweetsgetter:
     container_name: ms-tweetsgetter
@@ -43,6 +49,8 @@ services:
       APP_TWEETSURL: http://ms-tweets:8080
       APP_GETTWEETSPERIODICITY: 30000
       SERVER_PORT: 8080
+    ports:
+      - 8082:8080
 
   ms-webapp-db:
     container_name: ms-webapp-db
@@ -52,6 +60,8 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: twisub
+    ports:
+      - 54321:5432
 
   ms-webapp:
     container_name: ms-webapp
