@@ -1,16 +1,5 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/twisub
-    username: username
-    password: password
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    generate-ddl: true
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
 app:
+  users-url: http://localhost:8085
   tweets-url: http://localhost:8081
 
 server:

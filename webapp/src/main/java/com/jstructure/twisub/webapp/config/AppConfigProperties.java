@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("app")
 public class AppConfigProperties {
 
+    private String usersUrl;
+
     private String tweetsUrl;
 
 }

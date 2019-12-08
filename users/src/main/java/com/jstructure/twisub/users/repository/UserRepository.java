@@ -1,6 +1,6 @@
-package com.jstructure.twisub.webapp.auth.repository;
+package com.jstructure.twisub.users.repository;
 
-import com.jstructure.twisub.webapp.auth.entity.User;
+import com.jstructure.twisub.users.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
