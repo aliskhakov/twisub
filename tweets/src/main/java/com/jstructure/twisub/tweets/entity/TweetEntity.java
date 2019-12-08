@@ -1,5 +1,6 @@
 package com.jstructure.twisub.tweets.entity;
 
+import com.jstructure.twisub.tweets.eventlistener.TweetEntityListener;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
+@EntityListeners(TweetEntityListener.class)
 @Table(name = "tweet")
 public class TweetEntity {
 

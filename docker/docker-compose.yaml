@@ -88,3 +88,24 @@ services:
       SPRING_MAIL_PASSWORD: password
     ports:
       - 8084:8080
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    restart: always
+    ports:
+      - 2181:2181
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    restart: always
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: 'new-tweets:1:1'
+      KAFKA_MESSAGE_MAX_BYTES: 2000000
+    ports:
+      - 9092:9092
