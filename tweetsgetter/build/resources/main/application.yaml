@@ -1,7 +1,0 @@
-app:
-  twitter-client-url: http://localhost:8080
-  tweets-url: http://localhost:8081
-  get-tweets-periodicity: 30000
-
-server:
-  port: 8082
