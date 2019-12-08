@@ -5,4 +5,5 @@ task buildImages() {
     dependsOn 'webapp:buildImage'
     dependsOn 'emailsender:buildImage'
     dependsOn 'notifier:buildImage'
+    dependsOn 'users:buildImage'
 }

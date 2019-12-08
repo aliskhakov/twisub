@@ -1,6 +1,6 @@
 package com.jstructure.twisub.webapp.web;
 
-import com.jstructure.twisub.webapp.auth.entity.User;
+import com.jstructure.twisub.webapp.auth.dto.User;
 import com.jstructure.twisub.webapp.auth.service.SecurityService;
 import com.jstructure.twisub.webapp.auth.service.UserService;
 import lombok.RequiredArgsConstructor;

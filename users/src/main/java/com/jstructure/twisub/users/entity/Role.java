@@ -1,4 +1,4 @@
-package com.jstructure.twisub.webapp.auth.entity;
+package com.jstructure.twisub.users.entity;
 
 import lombok.Data;
 

@@ -1,35 +1,42 @@
 package com.jstructure.twisub.webapp.auth.service.impl;
 
-import com.jstructure.twisub.webapp.auth.entity.User;
-import com.jstructure.twisub.webapp.auth.repository.RoleRepository;
-import com.jstructure.twisub.webapp.auth.repository.UserRepository;
+import com.jstructure.twisub.webapp.auth.dto.User;
 import com.jstructure.twisub.webapp.auth.service.UserService;
+import com.jstructure.twisub.webapp.config.AppConfigProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
 
-import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final RestOperations restTemplate;
 
-    private final RoleRepository roleRepository;
+    private final AppConfigProperties properties;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
-        userRepository.save(user);
+        String path = String.format("%s/v1/users/", properties.getUsersUrl());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<User> request = new HttpEntity<>(user, headers);
+        restTemplate.exchange(path, HttpMethod.POST, request, String.class);
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        String path = String.format("%s/v1/users/%s/", properties.getUsersUrl(), username);
+        return restTemplate.exchange(path, HttpMethod.GET, null, User.class).getBody();
     }
 
 }

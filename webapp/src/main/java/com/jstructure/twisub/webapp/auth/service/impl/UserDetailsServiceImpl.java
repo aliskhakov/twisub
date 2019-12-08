@@ -1,8 +1,8 @@
 package com.jstructure.twisub.webapp.auth.service.impl;
 
-import com.jstructure.twisub.webapp.auth.entity.Role;
-import com.jstructure.twisub.webapp.auth.entity.User;
-import com.jstructure.twisub.webapp.auth.repository.UserRepository;
+import com.jstructure.twisub.webapp.auth.dto.Role;
+import com.jstructure.twisub.webapp.auth.dto.User;
+import com.jstructure.twisub.webapp.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,12 +18,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
-    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userService.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
