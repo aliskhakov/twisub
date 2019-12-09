@@ -14,3 +14,4 @@ spring:
 
 app:
   email-sender-url: http://localhost:8084
+  users-url: http://localhost:8085

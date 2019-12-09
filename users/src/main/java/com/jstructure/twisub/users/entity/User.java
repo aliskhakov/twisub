@@ -3,6 +3,7 @@ package com.jstructure.twisub.users.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -20,6 +21,11 @@ public class User {
     @Size(min = 1, max = 25)
     @Column(name = "username", nullable = false, length = 25)
     private String username;
+
+    @NotNull
+    @Email
+    @Column(name = "email", nullable = false, length = 25)
+    private String email;
 
     @NotNull
     @Size(min = 1)
