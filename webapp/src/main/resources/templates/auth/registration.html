@@ -8,6 +8,7 @@
 <h1>Registration</h1>
 <form action="#" th:action="@{/auth/registration/}" th:object="${userForm}" method="post">
     <p>Username: <input type="text" th:field="*{username}"/></p>
+    <p>Email: <input type="text" th:field="*{email}"/></p>
     <p>Password: <input type="text" th:field="*{password}"/></p>
     <p><input type="submit" value="Submit"/></p>
 </form>

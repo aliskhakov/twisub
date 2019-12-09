@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.jstructure.twisub'
-version = '0.0.1-SNAPSHOT'
+version = project.file('../version.txt').text.trim()
 sourceCompatibility = '1.8'
 
 configurations {
