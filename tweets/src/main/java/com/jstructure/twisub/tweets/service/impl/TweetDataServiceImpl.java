@@ -5,8 +5,10 @@ import com.jstructure.twisub.tweets.entity.QueryEntity;
 import com.jstructure.twisub.tweets.entity.TweetEntity;
 import com.jstructure.twisub.tweets.mapper.TweetMapper;
 import com.jstructure.twisub.tweets.repository.TweetRepository;
+import com.jstructure.twisub.tweets.service.MqService;
 import com.jstructure.twisub.tweets.service.TweetDataService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -21,6 +23,8 @@ public class TweetDataServiceImpl implements TweetDataService {
 
     private final TweetMapper tweetMapper;
 
+    private final MqService<String, Iterable<TweetDto>> mqService;
+
     @Override
     public void createTweet(UUID queryId, TweetDto tweetDto) {
         TweetEntity tweet = new TweetEntity();
@@ -34,11 +38,12 @@ public class TweetDataServiceImpl implements TweetDataService {
     }
 
     @Override
-    public void createTweets(UUID queryId, Iterable<TweetDto> tweets) {
+    public void createTweets(String username, UUID queryId, Iterable<TweetDto> tweets) {
         // TODO: optimise
         for (TweetDto tweet : tweets) {
             createTweet(queryId, tweet);
         }
+        mqService.send("new-tweets", username, tweets);
     }
 
     @Override

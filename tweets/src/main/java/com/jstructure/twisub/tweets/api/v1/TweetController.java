@@ -17,10 +17,10 @@ public class TweetController {
 
     private final TweetDataService dataService;
 
-    @PostMapping(path = "/{queryId}")
+    @PostMapping(path = "/{username}/{queryId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@PathVariable UUID queryId, @RequestBody List<TweetDto> tweets) {
-        dataService.createTweets(queryId, tweets);
+    public void create(@PathVariable String username, @PathVariable UUID queryId, @RequestBody List<TweetDto> tweets) {
+        dataService.createTweets(username, queryId, tweets);
     }
 
     @GetMapping(path = "/{username}/{queryId}", produces = "application/json")

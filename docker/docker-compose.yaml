@@ -84,9 +84,7 @@ services:
       - ms-users
       - ms-tweets
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://ms-webapp-db:5432/twisub
-      SPRING_DATASOURCE_USERNAME: username
-      SPRING_DATASOURCE_PASSWORD: password
+      APP_USERSURL: http://ms-users:8080
       APP_TWEETSURL: http://ms-tweets:8080
       SERVER_PORT: 8080
     ports:

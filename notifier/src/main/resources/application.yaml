@@ -5,7 +5,7 @@ spring:
       group-id: notifier_group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: com.jstructure.twisub.notifier.serializer.TweetsDeserializer
       properties:
         spring:
           json:

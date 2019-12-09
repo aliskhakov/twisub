@@ -10,7 +10,7 @@ public interface TweetsService {
 
     List<QueryDto> getQueries();
 
-    void createTweets(UUID queryId, List<TweetDto> tweets);
+    void createTweets(String username, UUID queryId, List<TweetDto> tweets);
 
     void updateQuery(QueryDto query);
 

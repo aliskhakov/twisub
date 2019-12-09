@@ -5,9 +5,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TweetKafkaMqServiceImpl extends AbstractKafkaMqService<String, TweetDto> {
+public class TweetKafkaMqServiceImpl extends AbstractKafkaMqService<String, Iterable<TweetDto>> {
 
-    public TweetKafkaMqServiceImpl(KafkaTemplate<String, TweetDto> kafkaTemplate) {
+    public TweetKafkaMqServiceImpl(KafkaTemplate<String, Iterable<TweetDto>> kafkaTemplate) {
         super(kafkaTemplate);
     }
 
