@@ -1,13 +1,11 @@
 package com.jstructure.twisub.ssenotifications.config;
 
 import com.jstructure.twisub.ssenotifications.SsenotificationsApplication;
-import com.jstructure.twisub.ssenotifications.dto.NotificationDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import redis.clients.jedis.Jedis;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -18,7 +16,10 @@ import static springfox.documentation.builders.PathSelectors.any;
 @Configuration
 @RequiredArgsConstructor
 @EnableSwagger2
+@EnableConfigurationProperties(AppRedisConfigProperties.class)
 public class AppConfig {
+
+    private final AppRedisConfigProperties redisProps;
 
     @Bean
     public Docket api() {
@@ -30,21 +31,10 @@ public class AppConfig {
     }
 
     @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConFactory
-                = new JedisConnectionFactory();
-//        jedisConFactory.setHostName("192.168.99.101");
-//        jedisConFactory.setPort(6379);
-//        jedisConFactory.setPassword("password");
-        return jedisConFactory;
-    }
-
-    @Bean
-    public RedisTemplate<String, NotificationDto> redisTemplate() {
-        final RedisTemplate<String, NotificationDto> template = new RedisTemplate<>();
-        template.setConnectionFactory(jedisConnectionFactory());
-        template.setValueSerializer(new GenericToStringSerializer<>(NotificationDto.class));
-        return template;
+    public Jedis redisTemplate() {
+        Jedis redisTemplate = new Jedis(redisProps.getHost(), redisProps.getPort());
+        redisTemplate.auth(redisProps.getPassword());
+        return redisTemplate;
     }
 
 }

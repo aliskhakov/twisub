@@ -18,7 +18,7 @@ public class NotificationController {
     }
 
     @GetMapping(path = "/{to}/", produces = "application/json")
-    public NotificationDto get(@RequestParam String to) {
+    public NotificationDto get(@PathVariable String to) {
         return notificationDataService.get(to);
     }
 

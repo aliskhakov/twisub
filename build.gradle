@@ -6,4 +6,5 @@ task buildImages() {
     dependsOn 'emailsender:buildImage'
     dependsOn 'notifier:buildImage'
     dependsOn 'users:buildImage'
+    dependsOn 'ssenotifications:buildImage'
 }
