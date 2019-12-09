@@ -1,0 +1,67 @@
+plugins {
+    id 'org.springframework.boot' version '2.0.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'com.bmuschko.docker-java-application' version '4.9.0'
+}
+
+group = 'com.jstructure.twisub'
+version = project.file('../version.txt').text.trim()
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    bootJar.archiveName = "${rootProject.name}.jar"
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework.boot:spring-boot-starter-data-redis'
+    compile 'redis.clients:jedis:2.9.0'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'io.springfox:springfox-swagger2:2.9.2'
+    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompile('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+import com.bmuschko.gradle.docker.tasks.image.*
+
+def dockerBuildDir = "${buildDir}/docker"
+def dockerVendor = 'aliskhakov'
+
+apply plugin: DockerRemoteApiPlugin
+
+task createDockerfile(type: Dockerfile) {
+    dependsOn 'bootJar'
+    destFile = project.file("${dockerBuildDir}/Dockerfile")
+    from 'openjdk:8-jre-alpine'
+    copyFile "${bootJar.archiveName}", "${bootJar.archiveName}"
+    entryPoint 'java'
+    defaultCommand '-jar', "${bootJar.archiveName}"
+    exposePort 8080
+    runCommand 'apk --update --no-cache add curl'
+}
+
+task copyJar(type: Copy) {
+    dependsOn 'createDockerfile'
+    from "${buildDir}/libs/${bootJar.archiveName}"
+    into "${dockerBuildDir}"
+}
+
+//task buildImage(type: DockerBuildImage) {
+//    dependsOn 'copyJar'
+//    inputDir = file("${dockerBuildDir}")
+//    tags.add("${dockerVendor}/${project.name}:${project.version}")
+//}
