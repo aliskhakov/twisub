@@ -20,7 +20,7 @@ public class TweetEntityListener {
 
     @PostPersist
     public void publishEvent(final TweetEntity tweet) {
-        mqService.send("new-tweets", mapper.map(tweet));
+        mqService.send("new-tweets", mapper.mapWithLinks(tweet));
     }
 
 }

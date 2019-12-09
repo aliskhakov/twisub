@@ -20,4 +20,6 @@ public class TweetDto implements Serializable {
 
     private String message;
 
+    private QueryDto query;
+
 }
