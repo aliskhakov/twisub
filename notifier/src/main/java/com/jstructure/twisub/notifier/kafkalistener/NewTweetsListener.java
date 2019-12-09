@@ -6,6 +6,9 @@ import com.jstructure.twisub.notifier.service.NotifierService;
 import com.jstructure.twisub.notifier.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,22 +23,22 @@ public class NewTweetsListener {
     private final UsersService usersService;
 
     @KafkaListener(topics = "new-tweets")
-    public void consume(List<TweetDto> tweets) {
-        tweets.stream()
-                .collect(
-                        Collectors.groupingBy(t -> t.getQuery().getUsername(),
-                                Collectors.mapping(TweetDto::getMessage,
-                                        Collectors.joining("\n\r")))
-                )
-                .forEach((username, text) -> {
-                    try {
-                        String email = usersService.getEmail(username);
-                        notify(email, text);
-                    } catch (Exception e) {
-                        // TODO
-                    }
-                })
-        ;
+    public void consume(@Payload List<TweetDto> tweets,
+                        @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String username) {
+        String messageText = tweets.stream()
+                .map(t -> String.format(
+                        "%s %s: %s",
+                        t.getCreatedAt(),
+                        t.getAuthor(),
+                        t.getMessage()
+                ))
+                .collect(Collectors.joining("\n\r"));
+        try {
+            String email = usersService.getEmail(username);
+            notify(email, messageText);
+        } catch (Exception e) {
+            // TODO
+        }
     }
 
     // TODO: move to single mapper

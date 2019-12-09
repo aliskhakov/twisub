@@ -1,5 +1,5 @@
 app:
-  twitter-client-url: http://localhost:8080
+  twitter-client-url: http://localhost:8084/mock
   tweets-url: http://localhost:8081
   get-tweets-periodicity: 30000
 

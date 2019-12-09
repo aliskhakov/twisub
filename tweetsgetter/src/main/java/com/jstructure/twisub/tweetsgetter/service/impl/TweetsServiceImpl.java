@@ -33,9 +33,12 @@ public class TweetsServiceImpl implements TweetsService {
     }
 
     @Override
-    public void createTweets(UUID queryId, List<TweetDto> tweets) {
-        String path = String.format("%s/v1/tweets/%s",
-                properties.getTweetsUrl(), queryId
+    public void createTweets(String username, UUID queryId, List<TweetDto> tweets) {
+        String path = String.format(
+                "%s/v1/tweets/%s/%s",
+                properties.getTweetsUrl(),
+                username,
+                queryId
         );
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
