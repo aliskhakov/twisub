@@ -23,7 +23,6 @@ Twisub
 * **Email Sender MS** реализует рассылку сообщений по email адресам пользователей.
 
 
-
 ## Сборка проекта
 
 Требуемое ПО:
@@ -38,26 +37,24 @@ $ ./gradlew :buildImages
 ```
 
 
-## Конфигурация
+## Настройка
+
+#### Подключение к Twitter API
 
 По умолчанию для получения твитов реального обращения к Twitter API не происходит, а используется мокирующий сервис.
-Для обращения к Twitter API необходимо произвести следующие изменения в файле [docker/docker-compose.yaml](docker/docker-compose.yaml).
+Для обращения к Twitter API необходимо задать значения соответствующих переменных окружения в файле [docker/.env](docker/.env).
 
-1. Необходимо задать параметры подключения к Twitter API, которые доступны на [портале разработчиков](https://developer.twitter.com/) после регистрации.
-
-```yaml
+```env
 ...
-  ms-twitterclient:
-    ...
-    environment:
-      APP_TWITTER_CONSUMERKEY: ...
-      APP_TWITTER_CONSUMERSECRET: ...
-      APP_TWITTER_ACCESSTOKEN: ...
-      APP_TWITTER_ACCESSTOKENSECRET: ...
+TWITTER_CONSUMER_KEY=consumer_key
+TWITTER_CONSUMER_SECRET=consumer_secret
+TWITTER_ACCESS_TOKEN=access_token
+TWITTER_ACCESS_TOKEN_SECRET=access_token_secret
 ...
 ```
 
-2. Заменить значение переменной `APP_TWITTERCLIENTURL` на `http://ms-twitterclient:8080`:
+Эти данные доступны на [портале разработчиков](https://developer.twitter.com/) после регистрации.
+Далее в файле [docker/docker-compose.yaml](docker/docker-compose.yaml) необходимо заменить значение переменной `APP_TWITTERCLIENTURL` на `http://ms-twitterclient:8080`:
 
 ```yaml
 ...
@@ -69,10 +66,23 @@ $ ./gradlew :buildImages
 ...
 ```
 
+#### Подключение к почтовому сервису
+
+Настройки подключения к почтовому сервису находятся в файле [docker/.env](docker/.env):
+
+```env
+...
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=username
+MAIL_PASSWORD=password
+...
+```
+
 
 ## Запуск
 
-Запуск осуществляется при помощи утилиты docker-compose из папки [docker](docker):
+Запуск осуществляется при помощи утилиты `docker-compose` из папки [docker](docker):
 
 ```sh
 $ cd docker
