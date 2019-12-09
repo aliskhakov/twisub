@@ -14,12 +14,14 @@ public class NotificationDataServiceImpl implements NotificationDataService {
 
     @Override
     public void add(NotificationDto notification) {
-        repository.set(notification.getTo(), notification);
+        repository.set(notification.getTo(), notification.getText());
     }
 
     @Override
     public NotificationDto get(String to) {
-        NotificationDto notification = repository.get(to);
+        NotificationDto notification = new NotificationDto();
+        notification.setText(repository.get(to));
+        notification.setTo(to);
         repository.delete(to);
         return notification;
     }
