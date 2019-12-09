@@ -14,25 +14,27 @@ services:
 
   ms-tweets:
     container_name: ms-tweets
-    image: aliskhakov/tweets:0.0.1-SNAPSHOT
+    image: aliskhakov/tweets:${APP_VERSION}
     depends_on:
       - ms-tweets-db
+      - kafka
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://ms-tweets-db:5432/twisub
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_PRODUCER_BOOTSTRAPSERVERS: kafka:9092
       SERVER_PORT: 8080
     ports:
       - 8081:8080
 
   ms-twitterclient:
     container_name: ms-twitterclient
-    image: aliskhakov/twitterclient:0.0.1-SNAPSHOT
+    image: aliskhakov/twitterclient:${APP_VERSION}
     environment:
-      APP_TWITTER_CONSUMERKEY: ENTER_YOUR_APP_TWITTER_CONSUMERKEY
-      APP_TWITTER_CONSUMERSECRET: ENTER_YOUR_APP_TWITTER_CONSUMERKEY
-      APP_TWITTER_ACCESSTOKEN: ENTER_YOUR_APP_TWITTER_ACCESSTOKEN
-      APP_TWITTER_ACCESSTOKENSECRET: ENTER_YOUR_APP_TWITTER_ACCESSTOKENSECRET
+      APP_TWITTER_CONSUMERKEY: ${TWITTER_CONSUMER_KEY}
+      APP_TWITTER_CONSUMERSECRET: ${TWITTER_CONSUMER_SECRET}
+      APP_TWITTER_ACCESSTOKEN: ${TWITTER_ACCESS_TOKEN}
+      APP_TWITTER_ACCESSTOKENSECRET: ${TWITTER_ACCESS_TOKEN_SECRET}
       APP_TWITTER_TWEETSPERSEARCH: 10
       SERVER_PORT: 8080
     ports:
@@ -40,7 +42,7 @@ services:
 
   ms-tweetsgetter:
     container_name: ms-tweetsgetter
-    image: aliskhakov/tweetsgetter:0.0.1-SNAPSHOT
+    image: aliskhakov/tweetsgetter:${APP_VERSION}
     depends_on:
       - ms-twitterclient
       - ms-tweets
@@ -65,11 +67,11 @@ services:
 
   ms-users:
     container_name: ms-users
-    image: aliskhakov/users:0.0.1-SNAPSHOT
+    image: aliskhakov/users:${APP_VERSION}
     depends_on:
       - ms-users-db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://ms-webapp-db:5432/twisub
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ms-users-db:5432/twisub
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
       APP_TWEETSURL: http://ms-tweets:8080
@@ -79,7 +81,7 @@ services:
 
   ms-webapp:
     container_name: ms-webapp
-    image: aliskhakov/webapp:0.0.1-SNAPSHOT
+    image: aliskhakov/webapp:${APP_VERSION}
     depends_on:
       - ms-users
       - ms-tweets
@@ -90,14 +92,26 @@ services:
     ports:
       - 8080:8080
 
+  ms-notifier:
+    container_name: ms-notifier
+    image: aliskhakov/notifier:${APP_VERSION}
+    depends_on:
+      - ms-users
+      - kafka
+    environment:
+      SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS: kafka:9092
+      APP_EMAILSENDERURL: http://ms-emailsender:8080
+      APP_USERSURL: http://ms-users:8080
+
   ms-emailsender:
     container_name: ms-emailsender
-    image: aliskhakov/emailsender:0.0.1-SNAPSHOT
+    image: aliskhakov/emailsender:${APP_VERSION}
     environment:
-      SPRING_MAIL_HOST: smtp.gmail.com
-      SPRING_MAIL_PORT: 587
-      SPRING_MAIL_USERNAME: username
-      SPRING_MAIL_PASSWORD: password
+      SPRING_MAIL_HOST: ${MAIL_HOST}
+      SPRING_MAIL_PORT: ${MAIL_PORT}
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SERVER_PORT: 8080
     ports:
       - 8084:8080
 
