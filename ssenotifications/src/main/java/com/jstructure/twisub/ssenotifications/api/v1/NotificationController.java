@@ -24,7 +24,8 @@ public class NotificationController {
         return notificationDataService.get(to);
     }
 
-    @GetMapping(path = "/{to}/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @CrossOrigin
+    @GetMapping(path = "/{to}/sse/", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<NotificationDto> getSse(@PathVariable String to) {
         return notificationDataService.getFlux(to);
     }

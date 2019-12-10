@@ -1,6 +1,7 @@
 app:
   users-url: http://localhost:8085
   tweets-url: http://localhost:8081
+  notifications-url: http://localhost:8086
 
 server:
   port: 8080

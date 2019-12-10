@@ -9,6 +9,8 @@ public class AppConfigProperties {
 
     private String emailSenderUrl;
 
+    private String notificationsUrl;
+
     private String usersUrl;
 
 }

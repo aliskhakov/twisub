@@ -11,4 +11,6 @@ public class AppConfigProperties {
 
     private String tweetsUrl;
 
+    private String notificationsUrl;
+
 }

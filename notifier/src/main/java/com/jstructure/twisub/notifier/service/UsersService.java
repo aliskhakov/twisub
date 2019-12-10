@@ -1,7 +1,9 @@
 package com.jstructure.twisub.notifier.service;
 
+import com.jstructure.twisub.notifier.dto.UserDto;
+
 public interface UsersService {
 
-    String getEmail(String username);
+    UserDto getUserInfo(String username);
 
 }
