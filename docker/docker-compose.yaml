@@ -85,9 +85,11 @@ services:
     depends_on:
       - ms-users
       - ms-tweets
+      - ms-browser-notifications
     environment:
       APP_USERSURL: http://ms-users:8080
       APP_TWEETSURL: http://ms-tweets:8080
+      APP_NOTIFICATIONSURL: http://localhost:8086
       SERVER_PORT: 8080
     ports:
       - 8080:8080
@@ -96,12 +98,14 @@ services:
     container_name: ms-notifier
     image: aliskhakov/notifier:${APP_VERSION}
     depends_on:
+      - ms-browser-notifications
       - ms-users
       - kafka
     environment:
       SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS: kafka:9092
       APP_EMAILSENDERURL: http://ms-emailsender:8080
       APP_USERSURL: http://ms-users:8080
+      APP_NOTIFICATIONSURL: http://ms-browser-notifications:8080
 
   ms-emailsender:
     container_name: ms-emailsender
@@ -136,10 +140,23 @@ services:
     ports:
       - 9092:9092
 
-  redis:
+  ms-browser-notifications-redis:
     image: bitnami/redis:5.0
-    container_name: redis
+    container_name: ms-browser-notifications-redis
     environment:
       - REDIS_PASSWORD=password
     ports:
       - 6379:6379
+
+  ms-browser-notifications:
+    container_name: ms-browser-notifications
+    image: aliskhakov/browser-notifications:${APP_VERSION}
+    depends_on:
+      - ms-browser-notifications-redis
+    environment:
+      APP_REDIS_HOST: ms-browser-notifications-redis
+      APP_REDIS_PORT: 6379
+      APP_REDIS_PASSWORD: password
+      SERVER_PORT: 8080
+    ports:
+      - 8086:8080

@@ -17,11 +17,11 @@ public class UsersServiceImpl implements UsersService {
     private final RestOperations restTemplate;
 
     @Override
-    public String getEmail(String username) {
+    public UserDto getUserInfo(String username) {
         String path = String.format("%s/v1/users/%s/", properties.getUsersUrl(), username);
         UserDto user = restTemplate.exchange(path, HttpMethod.GET, null, UserDto.class).getBody();
         if (user != null) {
-            return user.getEmail();
+            return user;
         }
         throw new RuntimeException(); // TODO
     }

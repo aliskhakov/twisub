@@ -15,3 +15,7 @@ spring:
 app:
   email-sender-url: http://localhost:8084
   users-url: http://localhost:8085
+  notifications-url: http://localhost:8086
+server:
+  port: 8087
+

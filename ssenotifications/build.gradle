@@ -24,6 +24,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-webflux'
     compile 'io.springfox:springfox-swagger2:2.9.2'
     compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -64,5 +65,5 @@ task copyJar(type: Copy) {
 task buildImage(type: DockerBuildImage) {
     dependsOn 'copyJar'
     inputDir = file("${dockerBuildDir}")
-    tags.add("${dockerVendor}/${project.name}:${project.version}")
+    tags.add("${dockerVendor}/browser-notifications:${project.version}")
 }
