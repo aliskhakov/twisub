@@ -3,6 +3,7 @@ package com.jstructure.twisub.tweets.mapper;
 import com.jstructure.twisub.tweets.entity.TweetEntity;
 import com.jstructure.twisub.tweets.dto.TweetDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -23,6 +24,15 @@ public class TweetMapper {
     public TweetDto mapWithLinks(TweetEntity tweet) {
         TweetDto dto = map(tweet);
         dto.setQuery(queryMapper.map(tweet.getQuery()));
+        return dto;
+    }
+
+    public TweetDto map(Tweet tweet) {
+        TweetDto dto = new TweetDto();
+        dto.setId(tweet.getId());
+        dto.setCreatedAt(tweet.getCreatedAt());
+        dto.setAuthor(tweet.getFromUser());
+        dto.setMessage(tweet.getText());
         return dto;
     }
 

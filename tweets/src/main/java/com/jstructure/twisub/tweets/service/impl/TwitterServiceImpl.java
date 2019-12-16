@@ -1,9 +1,9 @@
-package com.jstructure.twisub.twitterclient.service.impl;
+package com.jstructure.twisub.tweets.service.impl;
 
-import com.jstructure.twisub.twitterclient.config.AppConfigProperties;
-import com.jstructure.twisub.twitterclient.dto.TweetDto;
-import com.jstructure.twisub.twitterclient.mapper.TweetMapper;
-import com.jstructure.twisub.twitterclient.service.TwitterService;
+import com.jstructure.twisub.tweets.config.TwitterConfigProperties;
+import com.jstructure.twisub.tweets.dto.TweetDto;
+import com.jstructure.twisub.tweets.mapper.TweetMapper;
+import com.jstructure.twisub.tweets.service.TwitterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.Tweet;
@@ -23,7 +23,7 @@ public class TwitterServiceImpl implements TwitterService {
     private TweetMapper tweetMapper;
 
     @Autowired
-    private AppConfigProperties properties;
+    private TwitterConfigProperties properties;
 
     @Override
     public List<TweetDto> search(String query) {
@@ -37,7 +37,7 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<TweetDto> search(String query, long sinceId) {
+    public List<TweetDto> search(String query, Long sinceId) {
         SearchParameters p = new SearchParameters(query)
                 .count(properties.getTweetsPerSearch())
                 .sinceId(sinceId);

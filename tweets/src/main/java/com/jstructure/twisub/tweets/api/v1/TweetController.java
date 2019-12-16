@@ -17,6 +17,7 @@ public class TweetController {
 
     private final TweetDataService dataService;
 
+    @Deprecated
     @PostMapping(path = "/{username}/{queryId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@PathVariable String username, @PathVariable UUID queryId, @RequestBody List<TweetDto> tweets) {

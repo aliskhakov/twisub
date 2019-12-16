@@ -15,10 +15,8 @@ Twisub
 ![Twisub architecture](architecture.png)
 
 * **Users MS** хранит учетные данные пользователей.
-* **Tweets MS** хранит пользовательские запросы и твиты по этим запросам, полученные из Твиттера.
-* **Twitter Client MS** является посредником между Twitter API и приложением. Принимает синхронные запросы на поиск твиттов в Твиттере.
-* **Tweets Getter MS** реализует периодическую задачу поиска твиттов по пользовательским запросам. Он обращается в *Tweets MS* для получения запросов, с которыми он обращается в Твиттер через *Twitter Client MS*.
-* **Web App MS** - фронтальное веб-приложение.
+* **Tweets MS** хранит пользовательские запросы. Периодически получает твиты по этим запросам из Twitter и сохраняет их в БД.
+* **Web App MS** - фронтальное веб-приложение для работы с системой в браузере.
 * **Notifier MS** осуществляет рассылку пользователям новых твитов. Подписан на очередь сообщений с новыми твитами.
 * **Email Sender MS** реализует рассылку сообщений по email адресам пользователей.
 * **Browser Notifications MS** хранит уведомления о новых твитах для пользовтелей. Реализует возможность подписываться по спецификации [Server-Sent Events](https://www.w3.org/TR/2009/WD-eventsource-20090421/). Предоставляет JS файл для встраивания в HTML-страницу.
@@ -43,10 +41,12 @@ $ ./gradlew :buildImages
 #### Подключение к Twitter API
 
 По умолчанию для получения твитов реального обращения к Twitter API не происходит, а используется мокирующий сервис.
-Для обращения к Twitter API необходимо задать значения соответствующих переменных окружения в файле [docker/.env](docker/.env).
+Для обращения к Twitter API необходимо задать `TWITTER_USE_MOCK=false` и значения переменных окружения, 
+спользуемых для подключения к Twitter API, в файле [docker/.env](docker/.env).
 
 ```env
 ...
+TWITTER_USE_MOCK=false
 TWITTER_CONSUMER_KEY=consumer_key
 TWITTER_CONSUMER_SECRET=consumer_secret
 TWITTER_ACCESS_TOKEN=access_token
@@ -55,17 +55,6 @@ TWITTER_ACCESS_TOKEN_SECRET=access_token_secret
 ```
 
 Эти данные доступны на [портале разработчиков](https://developer.twitter.com/) после регистрации.
-Далее в файле [docker/docker-compose.yaml](docker/docker-compose.yaml) необходимо заменить значение переменной `APP_TWITTERCLIENTURL` на `http://ms-twitterclient:8080`:
-
-```yaml
-...
-  ms-tweetsgetter:
-    ...
-    environment:
-      APP_TWITTERCLIENTURL: http://ms-twitterclient:8080
-      ...
-...
-```
 
 #### Подключение к почтовому сервису
 

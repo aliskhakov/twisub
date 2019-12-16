@@ -41,6 +41,7 @@ public class QueryController {
         dataService.deleteQuery(username, id);
     }
 
+    @Deprecated
     @GetMapping(path = "/", produces = "application/json")
     public Iterable<QueryDto> list() {
         return dataService.getAll();

@@ -1,4 +1,4 @@
-package com.jstructure.twisub.twitterclient.config;
+package com.jstructure.twisub.tweets.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -6,7 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("app.twitter")
 @Data
-public class AppConfigProperties {
+public class TwitterConfigProperties {
+
+    private boolean useMock;
 
     private String consumerKey;
 
@@ -16,6 +18,6 @@ public class AppConfigProperties {
 
     private String accessTokenSecret;
 
-    private int tweetsPerSearch;
+    private int tweetsPerSearch = 10;
 
 }

@@ -1,4 +1,4 @@
-package com.jstructure.twisub.twitterclient.config;
+package com.jstructure.twisub.tweets.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class TwitterTemplateFactory extends AbstractFactoryBean<Twitter> {
 
     @Autowired
-    private AppConfigProperties properties;
+    private TwitterConfigProperties properties;
 
     @Override
     public Class<?> getObjectType() {
@@ -19,6 +19,9 @@ public class TwitterTemplateFactory extends AbstractFactoryBean<Twitter> {
 
     @Override
     protected Twitter createInstance() {
+        if (properties.isUseMock()) {
+            return null;
+        }
         return new TwitterTemplate(
                 properties.getConsumerKey(),
                 properties.getConsumerSecret(),
