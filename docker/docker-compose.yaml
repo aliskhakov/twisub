@@ -53,7 +53,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://ms-users-db:5432/twisub
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
-      APP_TWEETSURL: http://ms-tweets:8080
+      SPRING_KAFKA_PRODUCER_BOOTSTRAPSERVERS: kafka:9092
       SERVER_PORT: 8080
     ports:
       - 8085:8080
@@ -78,22 +78,35 @@ services:
     image: aliskhakov/notifier:${APP_VERSION}
     depends_on:
       - ms-browser-notifications
-      - ms-users
       - kafka
     environment:
       SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS: kafka:9092
       APP_EMAILSENDERURL: http://ms-emailsender:8080
-      APP_USERSURL: http://ms-users:8080
       APP_NOTIFICATIONSURL: http://ms-browser-notifications:8080
+
+  ms-emailsender-redis:
+    image: bitnami/redis:5.0
+    container_name: ms-emailsender-redis
+    environment:
+      - REDIS_PASSWORD=password
+    ports:
+      - 63791:6379
 
   ms-emailsender:
     container_name: ms-emailsender
     image: aliskhakov/emailsender:${APP_VERSION}
+    depends_on:
+      - ms-emailsender-redis
+      - kafka
     environment:
       SPRING_MAIL_HOST: ${MAIL_HOST}
       SPRING_MAIL_PORT: ${MAIL_PORT}
       SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
       SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS: kafka:9092
+      APP_REDIS_HOST: ms-emailsender-redis
+      APP_REDIS_PORT: 6379
+      APP_REDIS_PASSWORD: password
       SERVER_PORT: 8080
     ports:
       - 8084:8080
@@ -112,9 +125,9 @@ services:
       - zookeeper
     restart: always
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: 'new-tweets:1:1'
+      KAFKA_CREATE_TOPICS: 'new-tweets:1:1,new-users:1:1'
       KAFKA_MESSAGE_MAX_BYTES: 2000000
     ports:
       - 9092:9092

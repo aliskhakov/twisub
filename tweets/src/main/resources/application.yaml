@@ -17,7 +17,7 @@ spring:
 
 app:
   twitter:
-    use-mock: false
+    use-mock: true
     tweets-per-search: 10
     consumer-key: consumer-key
     consumer-secret: consumer-secret
