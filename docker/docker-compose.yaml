@@ -125,7 +125,7 @@ services:
       - zookeeper
     restart: always
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: 'new-tweets:1:1,new-users:1:1'
       KAFKA_MESSAGE_MAX_BYTES: 2000000
