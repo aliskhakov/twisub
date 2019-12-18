@@ -11,6 +11,4 @@ public class AppConfigProperties {
 
     private String notificationsUrl;
 
-    private String usersUrl;
-
 }

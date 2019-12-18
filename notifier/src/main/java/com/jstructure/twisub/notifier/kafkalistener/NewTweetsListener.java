@@ -1,10 +1,11 @@
 package com.jstructure.twisub.notifier.kafkalistener;
 
-import com.jstructure.twisub.notifier.dto.MessageDto;
 import com.jstructure.twisub.notifier.dto.TweetDto;
+import com.jstructure.twisub.notifier.messagebuilder.TweetsMessageBuilder;
 import com.jstructure.twisub.notifier.service.SenderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -12,38 +13,27 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component
 public class NewTweetsListener {
 
-    @Autowired
-    @Qualifier("emailSenderServiceImplBean")
-    private SenderService emailSender;
+    private final Logger LOGGER = LoggerFactory.getLogger(NewTweetsListener.class);
 
-    @Autowired
-    @Qualifier("notificationsSenderServiceImplBean")
-    private SenderService notificationsSender;
+    private final SenderService senderService;
 
-    // TODO: Maybe using single consumer for each type of notifications would be better.
+    private final TweetsMessageBuilder messageBuilder;
+
     @KafkaListener(topics = "new-tweets")
     public void consume(@Payload List<TweetDto> tweets,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String username) {
-        String messageText = tweets.stream()
-                .map(t -> String.format(
-                        "%s %s: %s",
-                        t.getCreatedAt(),
-                        t.getAuthor(),
-                        t.getMessage()
-                ))
-                .collect(Collectors.joining("\n\r"));
-        try {
-            MessageDto message = new MessageDto(username, "New Tweets", messageText);
-            emailSender.send(message);
-            notificationsSender.send(message);
-        } catch (Exception e) {
-            // TODO
-        }
+        LOGGER.info("Start sending message to {}", username);
+        senderService.send(
+                messageBuilder.builder()
+                        .to(username)
+                        .tweets(tweets)
+                        .build()
+        );
     }
 
 }

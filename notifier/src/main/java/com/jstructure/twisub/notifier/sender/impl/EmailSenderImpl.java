@@ -1,8 +1,8 @@
-package com.jstructure.twisub.notifier.service.impl;
+package com.jstructure.twisub.notifier.sender.impl;
 
 import com.jstructure.twisub.notifier.config.AppConfigProperties;
 import com.jstructure.twisub.notifier.dto.MessageDto;
-import com.jstructure.twisub.notifier.service.SenderService;
+import com.jstructure.twisub.notifier.sender.Sender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +13,7 @@ import org.springframework.web.client.RestOperations;
 
 @RequiredArgsConstructor
 @Service("emailSenderServiceImplBean")
-public class EmailSenderServiceImpl implements SenderService {
+public class EmailSenderImpl implements Sender {
 
     private final AppConfigProperties properties;
 
