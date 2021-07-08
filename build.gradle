@@ -1,7 +1,5 @@
 task buildImages() {
     dependsOn 'tweets:buildImage'
-    dependsOn 'tweetsgetter:buildImage'
-    dependsOn 'twitterclient:buildImage'
     dependsOn 'webapp:buildImage'
     dependsOn 'emailsender:buildImage'
     dependsOn 'notifier:buildImage'

@@ -2,8 +2,10 @@ package com.jstructure.twisub.tweets.config;
 
 import com.jstructure.twisub.tweets.TweetsApplication;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -14,6 +16,8 @@ import static springfox.documentation.builders.PathSelectors.any;
 @Configuration
 @RequiredArgsConstructor
 @EnableSwagger2
+@EnableConfigurationProperties(TwitterConfigProperties.class)
+@EnableScheduling
 public class AppConfig {
 
     @Bean

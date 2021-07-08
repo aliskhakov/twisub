@@ -25,6 +25,7 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'io.springfox:springfox-swagger2:2.9.2'
 	compile 'io.springfox:springfox-swagger-ui:2.9.2'
+	compile 'org.springframework.kafka:spring-kafka'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -38,7 +39,7 @@ test {
 }
 
 import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
-import com.bmuschko.gradle.docker.tasks.image.*;
+import com.bmuschko.gradle.docker.tasks.image.*
 
 def dockerBuildDir = "${buildDir}/docker"
 def dockerVendor = 'aliskhakov'

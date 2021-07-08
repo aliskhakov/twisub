@@ -36,7 +36,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         String path = String.format("%s/v1/users/%s/", properties.getUsersUrl(), username);
-        return restTemplate.exchange(path, HttpMethod.GET, null, User.class).getBody();
+        try {
+            return restTemplate.exchange(path, HttpMethod.GET, null, User.class).getBody();
+        } catch (Throwable e) {
+            return null;
+        }
     }
 
 }

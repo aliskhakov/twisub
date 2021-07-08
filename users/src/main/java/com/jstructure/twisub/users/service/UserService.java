@@ -1,12 +1,12 @@
 package com.jstructure.twisub.users.service;
 
 
-import com.jstructure.twisub.users.entity.User;
+import com.jstructure.twisub.users.dto.UserDto;
 
 public interface UserService {
 
-    void save(User user);
+    void save(UserDto userDto);
 
-    User findByUsername(String username);
+    UserDto findByUsername(String username);
 
 }

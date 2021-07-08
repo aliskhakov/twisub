@@ -6,6 +6,24 @@ spring:
     password: password
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: email_sender_group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.jstructure.twisub.emailsender.serializer.UserDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+app:
+  redis:
+    host: localhost
+    port: 63791
+    password: password
 
 server:
   port: 8084
